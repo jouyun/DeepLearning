@@ -39,6 +39,8 @@ def plot_2x2(g1, g2, g3, g4):
     axes[1,0].imshow(g3)
     axes[1,1].imshow(g4)
 
+
+
 def get_image(fname, shp, force_reload=False):   
     rfname=fname[0:-4]+'.npy'
     if ((os.path.isfile(rfname)) and (force_reload!=True)):
@@ -49,5 +51,24 @@ def get_image(fname, shp, force_reload=False):
         else:
             rtn=read_tiff(fname, shp[0])
         rtn=rtn.reshape(shp)
+        np.save(rfname, rtn)
+    return rtn
+
+#[num_images, slices, width, height, channels]
+def get_multichannel_image(fname, shp, force_reload=False):   
+    rfname=fname[0:-4]+'.npy'
+    if ((os.path.isfile(rfname)) and (force_reload!=True)):
+        rtn=np.load(rfname)
+    else:
+        rtn=read_tiff(fname, shp[0]*shp[1]*shp[4])
+        rtn=rtn.reshape(shp[0],shp[1],shp[4],shp[2],shp[3])
+        rtn=np.swapaxes(np.swapaxes(rtn,2,3),3,4)
+        #Now is in proper order, need to get rid of singleton dimensions
+        if (shp[1]==1):
+            rtn=rtn.reshape(shp[0],shp[2],shp[3],shp[4])
+        if (shp[4]==1):
+            rtn=rtn.reshape(shp[0],shp[1],shp[2],shp[3])
+        if (shp[1]==1 and shp[4]==1):
+            rtn=rtn.reshape(shp[0],shp[2],shp[3])
         np.save(rfname, rtn)
     return rtn
