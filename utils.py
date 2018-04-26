@@ -72,3 +72,25 @@ def get_multichannel_image(fname, shp, force_reload=False):
             rtn=rtn.reshape(shp[0],shp[2],shp[3])
         np.save(rfname, rtn)
     return rtn
+
+def format_raw_image(img, shp):
+    rtn=img
+    slices=shp[0]
+    width=shp[1]
+    height=shp[2]
+    channels=[3]
+    frames=rtn.shape[0]/slices/width/height/channels
+    rtn=rtn.reshape([frames, slices, channels, width, height])
+    rtn=np.swapaxes(np.swapaxes(rtn,1,2),2,3)[:,:,:,0:3]
+    if (slices==1):
+        rtn=rtn.reshape(frames, width, height, channels)
+    if (channels==1):
+        rtn=rtn.reshape(frames, slices, width, height)
+    if (slices==1 and channels==1):
+        rtn=rtn.reshape(frames, width, height)
+    return rtn
+
+#shp=[slices, width, height, channels]
+def get_raw_float_image(fname, shp):
+    rtn=np.fromfile(fname, np.float32).byteswap()
+    rtn=format_raw_image(rtn,shp)
