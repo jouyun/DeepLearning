@@ -78,10 +78,11 @@ def format_raw_image(img, shp):
     slices=shp[0]
     width=shp[1]
     height=shp[2]
-    channels=[3]
+    channels=shp[3]
     frames=rtn.shape[0]/slices/width/height/channels
+    frames=int(frames)
     rtn=rtn.reshape([frames, slices, channels, width, height])
-    rtn=np.swapaxes(np.swapaxes(rtn,1,2),2,3)[:,:,:,0:3]
+    rtn=np.swapaxes(np.swapaxes(rtn,1,2),2,3)
     if (slices==1):
         rtn=rtn.reshape(frames, width, height, channels)
     if (channels==1):
@@ -92,5 +93,7 @@ def format_raw_image(img, shp):
 
 #shp=[slices, width, height, channels]
 def get_raw_float_image(fname, shp):
-    rtn=np.fromfile(fname, np.float32).byteswap()
+    rtn=np.fromfile(fname, np.float32)
+    rtn=rtn.byteswap()
     rtn=format_raw_image(rtn,shp)
+    return rtn
