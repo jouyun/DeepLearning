@@ -39,7 +39,21 @@ def plot_2x2(g1, g2, g3, g4):
     axes[1,0].imshow(g3)
     axes[1,1].imshow(g4)
 
+def plot_4x1(g1, g2, g3, g4):
+    f,axes=plt.subplots(1,4, figsize=(10,10))
+    axes[0].imshow(g1)
+    axes[1].imshow(g2)
+    axes[2].imshow(g3)
+    axes[3].imshow(g4)
 
+def plot_6x1(g1, g2, g3, g4, g5, g6):
+    f,axes=plt.subplots(1,6, figsize=(15,10))
+    axes[0].imshow(g1)
+    axes[1].imshow(g2)
+    axes[2].imshow(g3)
+    axes[3].imshow(g4)
+    axes[4].imshow(g5)
+    axes[5].imshow(g6)
 
 def get_image(fname, shp, force_reload=False):   
     rfname=fname[0:-4]+'.npy'
@@ -82,7 +96,8 @@ def format_raw_image(img, shp):
     frames=rtn.shape[0]/slices/width/height/channels
     frames=int(frames)
     rtn=rtn.reshape([frames, slices, channels, width, height])
-    rtn=np.swapaxes(np.swapaxes(rtn,1,2),2,3)
+
+    rtn=np.swapaxes(np.swapaxes(rtn,2,3),3,4)
     if (slices==1):
         rtn=rtn.reshape(frames, width, height, channels)
     if (channels==1):
