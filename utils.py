@@ -52,6 +52,14 @@ def plot_4x1(g1, g2, g3, g4):
     axes[2].imshow(g3)
     axes[3].imshow(g4)
 
+def plot_5x1(g1, g2, g3, g4, g5):
+    f,axes=plt.subplots(1,5, figsize=(15,10))
+    axes[0].imshow(g1)
+    axes[1].imshow(g2)
+    axes[2].imshow(g3)
+    axes[3].imshow(g4)    
+    axes[4].imshow(g5)
+    
 def plot_6x1(g1, g2, g3, g4, g5, g6):
     f,axes=plt.subplots(1,6, figsize=(15,10))
     axes[0].imshow(g1)
