@@ -40,7 +40,7 @@ def plot_2x2(g1, g2, g3, g4):
     axes[1,1].imshow(g4)
 
 def plot_3x1(g1, g2, g3):
-    f,axes=plt.subplots(1,3, figsize=(10,10))
+    f,axes=plt.subplots(1,3, figsize=(15,15))
     axes[0].imshow(g1)
     axes[1].imshow(g2)
     axes[2].imshow(g3)
